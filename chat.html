@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Red Roof Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      padding: 10px;
+      width: 60%;
+      font-size: 1em;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px;
+      font-size: 1em;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff9999;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-height: 300px;
+      overflow-y: scroll;
+      text-align: left;
+      margin: 20px auto;
+      width: 60%;
+      border: 1px solid #ff4d4d;
+      padding: 10px;
+    }
+    li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Red Roof Chat</h1>
+
+  <input id="msg" placeholder="Type a message" aria-label="Message">
+  <button onclick="send()">Send</button>
+
+  <ul id="chat"></ul>
+
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on("message", msg => {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("chat").appendChild(li);
+    });
+
+    function send() {
+      const messageInput = document.getElementById("msg");
+      if (messageInput.value.trim() !== "") {
+        socket.send(messageInput.value);
+        messageInput.value = "";
+      }
+    }
+  </script>
+
+  <a href="/">Back to Home</a>
+</body>
+</html>
