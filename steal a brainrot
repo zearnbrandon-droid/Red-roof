@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temu Steal a Brainrot</title>
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: monospace;
+        }
+        #game {
+            font-size: 18px;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧠 Temu Steal a Brainrot</h2>
+<p>WASD to move. Grab 🧠 before the NPC steals them.</p>
+<pre id="game"></pre>
+
+<py-script>
+import random
+from js import document, window
+
+W, H = 12, 8
+
+player = [0, 0]
+npc = [11, 7]
+
+brainr
