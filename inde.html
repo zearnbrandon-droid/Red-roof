@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budget Granny</title>
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body { background: black; color: white; font-family: monospace; }
+        #game { line-height: 1.2; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<h2>🏚️ Temu Granny</h2>
+<p>WASD to move. Reach the 🚪 without touching Granny.</p>
+<pre id="game"></pre>
+
+<py-script>
+import random
+from js import document, window
+
+WIDTH = 10
+HEIGHT = 10
+
+player = [1, 1]
+granny = [8, 8]
+exit_pos = [9, 0]
+game_over = False
+
+def draw():
+    out = ""
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            if [x,y] == player:
+                out += "🧍"
+            elif [x,y] == granny:
+                out += "👵"
+            elif [x,y] == exit_pos:
+                out += "🚪"
+            else:
+                out += "⬛"
+        out += "\n"
+    document.getElementById("game").innerText = out
+
+def move_granny():
+    dx, dy = random.choice([(1,0),(-1,0),(0,1),(0,-1)])
+    granny[0] = max(0, min(WIDTH-1, granny[0] + dx))
+    granny[1] = max(0, min(HEIGHT-1, granny[1] + dy))
+
+def check_state():
+    global game_over
+    if player == granny:
+        document.getElementById("game").innerText += "\n💀 Granny got you."
+        game_over = True
+    if player == exit_pos:
+        document.getElementById("game").innerText += "\n🏆 You escaped!"
+        game_over = True
+
+def handle_key(e):
+    if game_over:
+        return
+
+    key = e.key.lower()
+    if key == "w": player[1] -= 1
+    if key == "s": player[1] += 1
+    if key == "a": player[0] -= 1
+    if key == "d": player[0] += 1
+
+    player[0] = max(0, min(WIDTH-1, player[0]))
+    player[1] = max(0, min(HEIGHT-1, player[1]))
+
+    move_granny()
+    draw()
+    check_state()
+
+window.addEventListener("keydown", handle_key)
+draw()
+</py-script>
+
+</body>
+</html>
