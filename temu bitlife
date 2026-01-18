@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Life Simulator Project</title>
+
+<style>
+  body {
+    background: #111;
+    color: white;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  #game {
+    background: #1c1c1c;
+    padding: 20px;
+    width: 320px;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  h1 {
+    margin-top: 0;
+    color: #4da6ff;
+  }
+
+  #stats p {
+    margin: 6px 0;
+  }
+
+  #event {
+    margin: 15px 0;
+    min-height: 45px;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+
+  #gameOver {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="game">
+  <h1>Life Simulator</h1>
+
+  <div id="stats">
+    <p>Age: <span id="age">0</span></p>
+    <p>Health: <span id="health">100</span></p>
+    <p>Happiness: <span id="happiness">100</span></p>
+    <p>Smarts: <span id="smarts">50</span></p>
+  </div>
+
+  <div id="event">You were born.</div>
+
+  <button id="ageBtn">Age Up</button>
+
+  <div id="gameOver"></div>
+</div>
+
+<script>
+  let age = 0;
+  let health = 100;
+  let happiness = 100;
+  let smarts = 50;
+  let alive = true;
+
+  const events = [
+    "You made a new friend.",
+    "You studied hard at school.",
+    "You played video games all night.",
+    "You got sick.",
+    "Nothing interesting happened."
+  ];
+
+  const ageSpan = document.getElementById("age");
+  const healthSpan = document.getElementById("health");
+  const happinessSpan = document.getElementById("happiness");
+  const smartsSpan = document.getElementById("smarts");
+  const eventDiv = document.getElementById("event");
+  const ageBtn = document.getElementById("ageBtn");
+  const gameOverDiv = document.getElementById("gameOver");
+
+  function updateUI() {
+    ageSpan.textContent = age;
+    healthSpan.textContent = health;
+    happinessSpan.textContent = happiness;
+    smartsSpan.textContent = smarts;
+  }
+
+  ageBtn.onclick = () => {
+    if (!alive) return;
+
+    age++;
+    health -= Math.floor(Math.random() * 6);
+    happiness -= Math.floor(Math.random() * 6);
+    smarts += Math.floor(Math.random() * 4);
+
+    let event = events[Math.floor(Math.random() * events.length)];
+
+    if (event === "You got sick.") {
+      health -= 10;
+    }
+
+    if (event === "You played video games all night.") {
+      happiness += 5;
+      smarts -= 3;
+    }
+
+    eventDiv.textContent = event;
+
+    if (health <= 0) {
+      alive = false;
+      eventDiv.textContent = `You died at age ${age}.`;
+      gameOverDiv.textContent = "GAME OVER";
+      ageBtn.disabled = true;
+    }
+
+    updateUI();
+  };
+
+  updateUI();
+</script>
+
+</body>
+</html>
